@@ -1,36 +1,15 @@
-//============================================================
-//killer SW 
-//============================================================
-
-self.addEventListener("install", () => {
-  self.skipWaiting();
-});
-
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(k => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-
-// ============================================================
-// CONFIGURACIÓN
-//============================================================
-const CACHE_NAME = "vgv-cache-v4";
+const CACHE_NAME = "vgv-cache-v5";
+const APP_ROOT = new URL("./", self.registration.scope).pathname;
 
 const urlsToCache = [
-  "/VgvApp2.1.1/",
-  "/VgvApp2.1.1/index.html",
-  "/VgvApp2.1.1/style.css",
-  "/VgvApp2.1.1/script_v2.js",
-  "/VgvApp2.1.1/manifest.json",
-  "/VgvApp2.1.1/icon-192.png",
-  "/VgvApp2.1.1/icon-512.png"
-];
-self.skipWaiting();
-self.clientsClaim();
+  "",
+  "index.html",
+  "style.css",
+  "script_v2.js",
+  "manifest.json",
+  "icon-192.png",
+  "icon-512.png"
+].map(file => `${APP_ROOT}${file}`);
 
 // ============================================================
 // INSTALL — Cachea archivos
