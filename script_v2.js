@@ -6,7 +6,7 @@ console.log("✅ script_v2.js cargado correctamente");
 let usuarioActivo = null;
 let fotoBase64 = null;
 let moduloActivo = "entregas";
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUKAxxXeIRuBu9FDEBy5CgtCg4vJoPz7QVWfiUIuHQrsbb9pIgbbpIJOKsm1KYmjaXCA/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzv3WViLhE9FdvmQJWDofMZW-zCiB-5WcNhRBMr3VIDQqkJVxTKouYFFJdYF8z-ybJL3g/exec";
 
 const FORM_CONFIG = {
   entregas: {
