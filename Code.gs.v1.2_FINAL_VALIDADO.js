@@ -5,8 +5,10 @@
 
 const SPREADSHEET_ID    = "1UDwJH8CtZUDufUI5rI9Gv7VeC9pvI62RXBJhw_8BK_0";
 const SHEET_LOGIN_ID    = "14dsVF9EppWfPNUBwNssNh3Jvzi55VbvZam1d9dwynwM";
+const SHEET_LOGIN_GID   = 0;
 const HOJA_ENTREGAS     = "Entregas";
 const HOJA_ENTREGAS_GID = 2040395718;
+const FOLDER_FOTOS_ID   = "16T8fmZkK_9Oen3i_otL3F2kCofMKkSIP";
 const FOLDER_FOTOS_NAME = "VGV_Fotos_Entregas";
 
 // ============================================================
@@ -51,7 +53,7 @@ function login(data) {
 
   try {
     const ss = SpreadsheetApp.openById(SHEET_LOGIN_ID);
-    const hoja = ss.getSheets()[0];
+    const hoja = getHojaLogin(ss);
     const rows = hoja.getDataRange().getValues();
 
     for (var i = 1; i < rows.length; i++) {
@@ -209,10 +211,32 @@ function getHojaEntregas(ss) {
   return ss.insertSheet(HOJA_ENTREGAS);
 }
 
+function getHojaLogin(ss) {
+  var hojas = ss.getSheets();
+
+  for (var i = 0; i < hojas.length; i++) {
+    if (hojas[i].getSheetId() === SHEET_LOGIN_GID) {
+      return hojas[i];
+    }
+  }
+
+  var hoja = ss.getSheetByName("Usuarios");
+
+  if (hoja) {
+    return hoja;
+  }
+
+  return ss.getSheets()[0];
+}
+
 // ============================================================
 // UTILIDADES
 // ============================================================
 function getOrCreateFolderByName(name) {
+  if (FOLDER_FOTOS_ID) {
+    return DriveApp.getFolderById(FOLDER_FOTOS_ID);
+  }
+
   var it = DriveApp.getFoldersByName(name);
   return it.hasNext() ? it.next() : DriveApp.createFolder(name);
 }
