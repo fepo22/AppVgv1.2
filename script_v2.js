@@ -6,9 +6,11 @@ console.log("✅ script_v2.js cargado correctamente");
 let usuarioActivo = null;
 let fotoBase64 = null;
 let moduloActivo = "entregas";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUKAxxXeIRuBu9FDEBy5CgtCg4vJoPz7QVWfiUIuHQrsbb9pIgbbpIJOKsm1KYmjaXCA/exec";
 
 const FORM_CONFIG = {
   entregas: {
+    nombreModulo: "Entregas",
     screen: "screen-entregas",
     numero: "guia-numero",
     tipo: "tipoDocumento",
@@ -23,6 +25,7 @@ const FORM_CONFIG = {
     status: "submit-status"
   },
   proveedores: {
+    nombreModulo: "Proveedores / Compras",
     screen: "screen-proveedores",
     numero: "compras-numero",
     tipo: "compras-tipo-documento",
@@ -61,7 +64,7 @@ async function doLogin() {
     <span class="loader"></span> Espere...
   `; 
 try {
-    const url = "https://script.google.com/macros/s/AKfycbzP04DM6clsY4oUASPu3HDRLdFlsjk4EwORNVcYMlC4hNPaPr2W4KsUGNOoecXJIUCr/exec";
+  const url = APPS_SCRIPT_URL;
     const payload = { accion: "login", usuario: user, password: pass };
     const res = await fetch(url, {
       method: "POST",
@@ -314,6 +317,7 @@ async function submitEntrega(modulo = moduloActivo) {
   const numero = document.getElementById(config.numero).value.trim();
   const estado = document.getElementById(config.estado).value;
   const tipoDocumento = document.getElementById(config.tipo).value;
+  const moduloOrigen = config.nombreModulo;
 
   if (!tipoDocumento) {
     alert("Selecciona si es guía o factura.");
@@ -338,6 +342,7 @@ async function submitEntrega(modulo = moduloActivo) {
   estado,
   tipoDocumento,
   modulo: modulo === "proveedores" ? "proveedores_compras" : "entregas",
+  moduloOrigen,
   usuario: usuarioActivo.nombre,
   rol: usuarioActivo.rol,
   fecha: new Date().toLocaleDateString("es-CL"),
@@ -355,7 +360,7 @@ async function submitEntrega(modulo = moduloActivo) {
   status.classList.remove("hidden");
 
   try {
-const res = await fetch("https://script.google.com/macros/s/AKfycbzP04DM6clsY4oUASPu3HDRLdFlsjk4EwORNVcYMlC4hNPaPr2W4KsUGNOoecXJIUCr/exec", {
+const res = await fetch(APPS_SCRIPT_URL, {
   method: "POST",
   body: new URLSearchParams({ data: JSON.stringify(payload) })
 });
